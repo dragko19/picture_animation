@@ -1,12 +1,13 @@
 #include "drawing.h"
 #include "figures.h"
+#include "matrix.h"
 #include <iostream>
 
 using namespace std;
 
 int main()
 {
-    Graph_lib::Window wnd(Point(100, 100), 600, 400, "Hubert Janicki (281771)");
+    /*Graph_lib::Window wnd(Point(600, 600), 600, 400, "Hubert Janicki (281771)");
 
     Button btn_close(Point(wnd.x_max() - 80,wnd.y_max() - 20), 80, 20, "Close", cb_close);
     wnd.attach(btn_close);
@@ -17,9 +18,18 @@ int main()
     spnLR.attachTo(wnd);
 
     Spinner spnUD(Point(wnd.x_max() - 90, 70), -150, 150, "\\/", "/\\", 0);
-    spnUD.attachTo(wnd);
+    spnUD.attachTo(wnd);*/
+//Matrix tests
 
-        ifstream ifs("house.txt");
+    Matrix<int> matr_test;
+    cout << Matrix<int>::scaleMx(2,3) << "\n";
+    cout << Matrix<int>::translateMx(2,3) << "\n";
+    cout << Matrix<double>::rotateMx(45) << "\n";
+
+
+//******************************************
+
+    /*ifstream ifs("house.txt");
     if (!ifs.good()) // dobrze sprawdziæ przed czytaniem
     {
         cout << "Cannot find input file.\n";
@@ -55,5 +65,5 @@ int main()
     for (auto pf : figs)
         wnd.attach(*(pf->get_shape(trafo.first, trafo.second)));
 
-    Graph_lib::gui_main();
+    Graph_lib::gui_main();*/
 }
