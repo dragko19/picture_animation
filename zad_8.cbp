@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="zad_8" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/zad_8" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add option="-DWIN32" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/zad_8" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="D:/DYSK GOOGLE/PW/GI/JTP 2/LAPTOP/CodeBlocks/fltk-1.3.4-2/build" />
+			<Add directory="D:/DYSK GOOGLE/PW/GI/JTP 2/LAPTOP/CodeBlocks/fltk-1.3.4-2" />
+			<Add directory="D:/DYSK GOOGLE/PW/GI/JTP 2/LAPTOP/CodeBlocks/graph_lib" />
+		</Compiler>
+		<Linker>
+			<Add library="libgraph_lib.a" />
+			<Add library="libfltk.a" />
+			<Add library="libfltk_images.a" />
+			<Add library="libgdi32.a" />
+			<Add library="libole32.a" />
+			<Add library="libcomctl32.a" />
+			<Add library="libuuid.a" />
+			<Add directory="D:/DYSK GOOGLE/PW/GI/JTP 2/LAPTOP/CodeBlocks/graph_lib/bin/Debug" />
+			<Add directory="D:/DYSK GOOGLE/PW/GI/JTP 2/LAPTOP/CodeBlocks/fltk-1.3.4-2/build/lib" />
+		</Linker>
+		<Unit filename="anim_test..cpp" />
+		<Unit filename="drawing.cpp" />
+		<Unit filename="drawing.h" />
+		<Unit filename="figures.cpp" />
+		<Unit filename="figures.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
