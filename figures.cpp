@@ -1,5 +1,6 @@
 //Hubert Janicki, nr albumu: 281771
 #include "figures.h"
+#include "matrix.h"
 
 //class FPoint defeinitions
 
@@ -267,6 +268,95 @@
 
         return trans;
     }
+
+    vector<figure*> getFiguresFromFile(const string& filePath)
+    {
+        vector<figure*> figs;
+        ifstream ifs(filePath);
+        if (!ifs.good()) // dobrze sprawdziæ przed czytaniem
+        {
+            cout << "Cannot find input file.\n";
+        }
+        else
+        {
+            try
+            {
+                figure *fig;
+                while ((fig = get_figure(ifs)) != nullptr)
+                {
+                    figs.push_back(fig);
+                }
+            }
+            catch (exception& ex)
+            {
+                cout << ex.what() << endl;
+            }
+            catch (...)
+            {
+                cout << "figure: unexpected exception in >>\n";
+            }
+        }
+        ifs.close();
+
+        return figs;
+    }
+
+    vector<Graph_lib::Shape*> getShapesToDraw(vector<figure*> vF, std::pair<FPoint,FPoint> winBox)
+    {
+        vector<Graph_lib::Shape*> retVec;
+
+        pair<FPoint, FPoint> picBox = map_bbox(vF);
+        pair<FPoint, FPoint> trafo = get_transformation(picBox, winBox);
+
+            for (auto pf : vF)
+            {
+                retVec.push_back((pf->get_shape(trafo.first, trafo.second)));
+            }
+
+        return retVec;
+    }
+
+    vector<Graph_lib::Shape*> getShapesToDraw(std::pair<FPoint,FPoint> winBox, vector<figure*> vF, int scale, int moveX, int moveY, float rotationAngle)
+    {
+        vector<Graph_lib::Shape*> retVec;
+
+
+        float centerX = (float)((winBox.second.x - winBox.first.x)/ 2) + moveX;
+        float centerY = (float)((winBox.second.y - winBox.first.y)/ 2) - moveY;
+
+        Matrix<float> mx;
+        mx *= Matrix<float>::translateMx(-centerX + moveX, -centerY + moveY);
+        mx *= Matrix<float>::rotateMx(rotationAngle);
+        mx *= Matrix<float>::translateMx(centerX, centerY);
+
+        for(auto fig : vF)
+        {
+            vector<FPoint> transPoints = fig -> getFDef();
+            for(int i = 0; i < (int)fig -> getFDef().size(); i++)
+            {
+                transPoints[i] = mx.transform(transPoints[i]);
+                cout << mx.transform(transPoints[i]) << "\n";
+            }
+            fig -> setFDef(transPoints);
+            transPoints.clear();
+        }
+
+        pair<FPoint, FPoint> picBox = map_bbox(vF);
+        FPoint pic_center = center_of_box(picBox, {1.0f, -1.0f});
+        FPoint win_center = center_of_box(winBox, {1.0f, 1.0f});
+
+        FPoint trans = shift(pic_center, win_center);
+
+        for (auto pf : vF)
+        {
+            retVec.push_back((pf->get_shape({1.0f, -1.0f}, trans)));
+        }
+
+        return retVec;
+
+    }
+
+
 
 
 

@@ -39,6 +39,11 @@ FPoint scale_calculating(const std::pair<FPoint,FPoint>& obj_bbox, const std::pa
 FPoint center_of_box(const std::pair<FPoint,FPoint>& box, const FPoint& scale);
 FPoint shift(const FPoint& obj_bbox_center, const FPoint& disp_bbox_center);
 
+vector<figure*> getFiguresFromFile(const string& filePath);
+vector<Graph_lib::Shape*> getShapesToDraw(vector<figure*> vF, std::pair<FPoint,FPoint> winBox);
+vector<Graph_lib::Shape*> getShapesToDraw(std::pair<FPoint,FPoint> winBox, vector<figure*> vF, int scale = 100, int moveX = 0, int moveY = 0, float rotationAngle = 0.0f);
+FPoint setVecBboxFirstPartCoordSys(pair<FPoint, FPoint>& bbox);
+
 class FPoint
 {
 	public:
@@ -72,6 +77,10 @@ class figure
     {
         return "Unknown";
     }
+
+    vector<FPoint> getFDef() const { return fdef; }
+    void setFDef(int index, const FPoint& val) { fdef[index] = val; }
+    void setFDef(const vector<FPoint>& vec) { fdef = vec; }
 
     virtual std::string get_id() const = 0;
 

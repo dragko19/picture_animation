@@ -1,5 +1,4 @@
 #include "drawing.h"
-#include "figures.h"
 #include "matrix.h"
 #include <iostream>
 
@@ -7,18 +6,6 @@ using namespace std;
 
 int main()
 {
-    /*Graph_lib::Window wnd(Point(600, 600), 600, 400, "Hubert Janicki (281771)");
-
-    Button btn_close(Point(wnd.x_max() - 80,wnd.y_max() - 20), 80, 20, "Close", cb_close);
-    wnd.attach(btn_close);
-    Spinner spnScale(Point(wnd.x_max() - 90,10), 50, 150, "\\/", "/\\", 95);
-    spnScale.attachTo(wnd);
-
-    Spinner spnLR(Point(wnd.x_max() - 90, 40), -200, 200, "<", ">", 0);
-    spnLR.attachTo(wnd);
-
-    Spinner spnUD(Point(wnd.x_max() - 90, 70), -150, 150, "\\/", "/\\", 0);
-    spnUD.attachTo(wnd);*/
 //Matrix tests
 
     Matrix<int> matr_test;
@@ -26,44 +13,28 @@ int main()
     cout << Matrix<int>::translateMx(2,3) << "\n";
     cout << Matrix<double>::rotateMx(45) << "\n";
 
+    Matrix<int> multiply_test;
+
+    multiply_test = Matrix<int>::scaleMx(2,3) * Matrix<int>::translateMx(2,3);
+    cout << multiply_test << "\n";
+
+    FPoint multiplied = multiply_test.transform(FPoint(10,20));
+    cout << multiplied << "\n";
+
 
 //******************************************
 
-    /*ifstream ifs("house.txt");
-    if (!ifs.good()) // dobrze sprawdziæ przed czytaniem
-    {
-        cout << "Cannot find input file.\n";
-        return 1;
-    }
-    vector<figure*> figs;
-    try
-    {
-        figure *fig;
-        while ((fig = get_figure(ifs)) != nullptr)
-        {
-            cout << *fig << endl;
-            figs.push_back(fig);
-        }
-    }
-    catch (exception& ex)
-    {
-        cout << ex.what() << endl;
-    }
-    catch (...)
-    {
-        cout << "figure: unexpected exception in >>\n";
-    }
-    ifs.close();
 
+    myWindow wnd(Point(400, 400), 600, 400, "Hubert Janicki (281771)", { {20.0f, 20.0f}, {500.f, 380.f} });
+
+    wnd.vecOfFigures = getFiguresFromFile("house.txt");
+    wnd.vecOfShapes = getShapesToDraw(wnd.vecOfFigures, { {20.0f, 20.0f}, {500.f, 380.f} });
 
     // przygotowanie do wyswietlenia
-    pair<FPoint, FPoint> egg_box = map_bbox(figs);
-    pair<FPoint, FPoint> win_box = { {20.0f, 20.0f}, {500.f, 380.f} };
-    pair<FPoint, FPoint> trafo = get_transformation(egg_box, win_box);
+
+    for(unsigned int i = 0; i < wnd.vecOfShapes.size(); i++)
+            wnd.attach(*wnd.vecOfShapes[i]);
 
 
-    for (auto pf : figs)
-        wnd.attach(*(pf->get_shape(trafo.first, trafo.second)));
-
-    Graph_lib::gui_main();*/
+    Graph_lib::gui_main();
 }

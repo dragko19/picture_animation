@@ -1,6 +1,8 @@
 #ifndef MARTIX_H_INCLUDED
 #define MARTIX_H_INCLUDED
 
+#include "figures.h"
+
 #define M_PI 3.14159265359
 
 template <class T>
@@ -87,9 +89,9 @@ class Matrix
             {
                 T value = 0;
                 for(int k = 0; k < static_cast<int>(size); k++)
-                    value = lhm[r][k] * rhm[k][c];
+                    value += lhm.cf[r][k] * rhm.cf[k][c];
 
-                retMatrix[r][c] = value;
+                retMatrix.cf[r][c] = value;
             }
         }
 
@@ -100,7 +102,14 @@ class Matrix
     Matrix& operator *= (const Matrix& rhm) { return *this = *this * rhm;}
 
 
-    FPoint transform(const FPoint& pt) const;
+    FPoint transform(const FPoint& pt) const
+    {
+        FPoint retPoint;
+        retPoint.x = pt.x * cf[0][0] + pt.y * cf[1][0] + 1 * cf[2][0];
+        retPoint.y = pt.x * cf[0][1] + pt.y * cf[1][1] + 1 * cf[2][1];
+
+        return retPoint;
+    }
 
 };
 

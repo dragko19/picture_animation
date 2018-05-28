@@ -3,6 +3,9 @@
 
 #include <Graph.h>
 #include <GUI.h>
+#include "figures.h"
+
+class myWindow;
 
 using namespace Graph_lib;
 
@@ -20,7 +23,7 @@ struct myButton : Button
 
 class Spinner
 {
-    Graph_lib::Window* pWnd = nullptr;
+    myWindow* pWnd = nullptr;
     myButton btn_lh, btn_rh;
     Out_box infoBox;
 
@@ -32,11 +35,9 @@ class Spinner
     static void cb_lh(Address pBtn, Address pSpinner);
     static void cb_rh(Address pBtn, Address pSpinner);
 
-    void changeVal(int &val, int step);
-
-    void draw_changed_figure(int dx, int dy);
-
+    void draw_changed_figure();
     void buildBoxCapacity();
+    void changeVal(int &val, int step);
 
 public:
     Spinner(Point loc, int minimum, int maximum, string lhCaption, string rhCaption, int startVal)
@@ -46,7 +47,48 @@ public:
           minVal(minimum), maxVal(maximum), curVal(startVal)
           {}
 
-    void attachTo(Graph_lib::Window& wnd);
+    void attachTo(myWindow& wnd);
+    int getCurVal() { return curVal; }
+};
+
+class myWindow : public Graph_lib::Window
+{
+    Button btn_close, btn_Anim;
+
+    Spinner scale, moveX, moveY;
+
+    std::pair<FPoint, FPoint> winBox;
+
+    void switchBtnAnimLabel();
+
+    static void cb_close(Address pWidget, Address pWnd);
+    static void cb_timer(Address pWidget, Address pWnd);
+    static void timer_callback(Address addr);
+
+public:
+    myWindow(Point loc, int w, int h, string title, std::pair<FPoint, FPoint> wBox) :
+            Graph_lib::Window(loc, w, h, title),
+            btn_close(Point(x_max() - 80, y_max() - 20), 80, 20, "Close", myWindow::cb_close),
+            btn_Anim(Point(x_max() - 80, y_max() - 50), 80, 20, "Start", myWindow::cb_timer),
+            scale(Point(x_max() - 90,10), 50, 150, "\\/", "/\\", 100),
+            moveX(Point(x_max() - 90, 40), -200, 200, "<", ">", 0),
+            moveY(Point(x_max() - 90, 70), -150, 150, "\\/", "/\\", 0),
+            winBox(wBox)
+            {
+                attach(btn_close);
+                attach(btn_Anim);
+                scale.attachTo(*this);
+                moveX.attachTo(*this);
+                moveY.attachTo(*this);
+            }
+
+    float rotationAngle = 0.0f;
+	bool animationRunning = false;
+	void refreshMap();
+
+	vector<figure*> vecOfFigures;
+	vector<Shape*> vecOfShapes;
+
 };
 
 #endif // DRAWING_H_INCLUDED
