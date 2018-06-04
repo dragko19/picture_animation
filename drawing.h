@@ -1,3 +1,4 @@
+//Hubert Janicki, numer albumu: 281771
 #ifndef DRAWING_H_INCLUDED
 #define DRAWING_H_INCLUDED
 

@@ -2,6 +2,8 @@
 #include "figures.h"
 #include "matrix.h"
 
+#define M_PI 3.14159265359
+
 //class FPoint defeinitions
 
 	FPoint::operator Graph_lib::Point() const
@@ -43,6 +45,11 @@
         return min_max(fdef);
     }
 
+    vector<FPoint> figure::getFDef(const FPoint& scale /*= {1.0f,1.0f}*/, const FPoint& trans /*= {0.0f,0.0f}*/)
+    {
+        return coord_scaling(fdef, scale, trans);
+    }
+
 //class Rect definitions
 
     Graph_lib::Shape* Rect::get_shape(const FPoint& scale /*= {1.0f,1.0f}*/, const FPoint& trans /*= {0.0f,0.0f}*/) const
@@ -59,6 +66,17 @@
         std::pair<FPoint,FPoint> res = min_max(fdef_new);
 
         return new Graph_lib::Rectangle(res.first, res.second);
+    }
+
+    vector<FPoint> Rect::getFDef(const FPoint& scale /*= {1.0f,1.0f}*/, const FPoint& trans /*= {0.0f,0.0f}*/)
+    {
+        vector<FPoint> fdef_new(5);
+        fdef_new[0] = fdef[0];
+        fdef_new[1] = FPoint(fdef[1].x, fdef[0].y);
+        fdef_new[2] = fdef[1];
+        fdef_new[3] = FPoint(fdef[0].x, fdef[1].y);
+        fdef_new[4] = fdef[0];
+        return coord_scaling(fdef_new, scale, trans);
     }
 
 //class Circ definitions
@@ -82,6 +100,24 @@
 		return std::make_pair(pmin,pmax);
     }
 
+    vector<FPoint> Circ::getFDef(const FPoint& scale /*= {1.0f,1.0f}*/, const FPoint& trans /*= {0.0f,0.0f}*/)
+    {
+        double r = radius(fdef[0], fdef[1]);
+        const int n = 12;
+        float angle = 0.0f;
+        float angle_step = 2*M_PI / n;
+        vector<FPoint> fdef_new(n + 1);
+
+        for(int i = 0; i <= n; i++)
+        {
+            fdef_new[i].x = fdef[0].x + r * cos(angle);
+            fdef_new[i].y = fdef[0].y + r * sin(angle);
+            angle += angle_step;
+        }
+
+        return coord_scaling(fdef_new, scale, trans);
+    }
+
 //class Line definitions
 
     Graph_lib::Shape* Line::get_shape(const FPoint& scale /*= {1.0f,1.0f}*/, const FPoint& trans /*= {0.0f,0.0f}*/) const
@@ -94,7 +130,6 @@
 
         return ply;
     }
-
 
 //other functions definitions
 
@@ -153,6 +188,18 @@
 
         std::vector<FPoint> pts = get_points(is);
 
+        if (id == Rect::class_id())
+            return new Rect(pts);
+        if (id == Circ::class_id())
+            return new Circ(pts);
+        if (id == Line::class_id())
+            return new Line(pts);
+
+        throw std::runtime_error("Unknown figure id.");
+    }
+
+    figure* get_figure(const vector<FPoint>& pts, std::string id)
+    {
         if (id == Rect::class_id())
             return new Rect(pts);
         if (id == Circ::class_id())
@@ -319,41 +366,43 @@
     vector<Graph_lib::Shape*> getShapesToDraw(std::pair<FPoint,FPoint> winBox, vector<figure*> vF, int scale, int moveX, int moveY, float rotationAngle)
     {
         vector<Graph_lib::Shape*> retVec;
+        vector<figure* > new_figures;
+        std::string id = "Line";
 
+        float centerX = (float)((winBox.second.x + winBox.first.x)/ 2);
+        float centerY = (float)((winBox.second.y + winBox.first.y)/ 2);
 
-        float centerX = (float)((winBox.second.x - winBox.first.x)/ 2) + moveX;
-        float centerY = (float)((winBox.second.y - winBox.first.y)/ 2) - moveY;
 
         Matrix<float> mx;
-        mx *= Matrix<float>::translateMx(-centerX + moveX, -centerY + moveY);
+        mx *= Matrix<float>::translateMx(-centerX, -centerY);
         mx *= Matrix<float>::rotateMx(rotationAngle);
         mx *= Matrix<float>::translateMx(centerX, centerY);
 
+        pair<FPoint, FPoint> picBox = map_bbox(vF);
+        pair<FPoint, FPoint> trafo = get_transformation(picBox, winBox);
+
         for(auto fig : vF)
         {
-            vector<FPoint> transPoints = fig -> getFDef();
-            for(int i = 0; i < (int)fig -> getFDef().size(); i++)
+            vector<FPoint> transPoints = fig -> getFDef(trafo.first, trafo.second);
+            for(int i = 0; i < (int)transPoints.size(); i++)
             {
                 transPoints[i] = mx.transform(transPoints[i]);
                 cout << mx.transform(transPoints[i]) << "\n";
             }
-            fig -> setFDef(transPoints);
+            new_figures.push_back(get_figure(transPoints, id));
             transPoints.clear();
         }
 
-        pair<FPoint, FPoint> picBox = map_bbox(vF);
-        FPoint pic_center = center_of_box(picBox, {1.0f, -1.0f});
+        /*FPoint pic_center = center_of_box(picBox, {1.0f, -1.0f});
         FPoint win_center = center_of_box(winBox, {1.0f, 1.0f});
+        FPoint trans = shift(pic_center, win_center);*/
 
-        FPoint trans = shift(pic_center, win_center);
-
-        for (auto pf : vF)
+        for (auto pf : new_figures)
         {
-            retVec.push_back((pf->get_shape({1.0f, -1.0f}, trans)));
+            retVec.push_back((pf->get_shape()));
         }
 
         return retVec;
-
     }
 
 

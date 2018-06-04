@@ -1,9 +1,10 @@
+//Hubert Janicki, numer albumu: 281771
 #ifndef MARTIX_H_INCLUDED
 #define MARTIX_H_INCLUDED
 
 #include "figures.h"
 
-#define M_PI 3.14159265359
+
 
 template <class T>
 class Matrix
@@ -57,7 +58,6 @@ class Matrix
     }
     static Matrix rotateMx(T angle)
     {
-        angle *= M_PI/180;
         Matrix<T> retMatrix;
         retMatrix.cf[0][0] = cos(angle);
         retMatrix.cf[0][1] = -sin(angle);

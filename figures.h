@@ -25,6 +25,7 @@ std::string get_id(std::istream& is);
 vector<FPoint> get_points(std::istream& is);
 
 figure* get_figure(std::istream& is);
+figure* get_figure(const vector<FPoint>& pts, std::string id);
 
 double radius(FPoint,FPoint);
 
@@ -78,7 +79,7 @@ class figure
         return "Unknown";
     }
 
-    vector<FPoint> getFDef() const { return fdef; }
+    virtual vector<FPoint> getFDef(const FPoint& scale = {1.0f,1.0f}, const FPoint& trans = {0.0f,0.0f});
     void setFDef(int index, const FPoint& val) { fdef[index] = val; }
     void setFDef(const vector<FPoint>& vec) { fdef = vec; }
 
@@ -113,7 +114,7 @@ public:
     {
         return Rect::class_id();
     }
-
+    virtual vector<FPoint> getFDef(const FPoint& scale = {1.0f,1.0f}, const FPoint& trans = {0.0f,0.0f});
 
 };
 
@@ -139,6 +140,7 @@ public:
     }
 
     virtual std::pair<FPoint,FPoint> bbox() const;
+    virtual vector<FPoint> getFDef(const FPoint& scale = {1.0f,1.0f}, const FPoint& trans = {0.0f,0.0f});
 };
 
 class Line: public figure

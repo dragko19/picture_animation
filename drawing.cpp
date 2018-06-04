@@ -1,3 +1,4 @@
+//Hubert Janicki, numer albumu: 281771
 #include "drawing.h"
 #include "matrix.h"
 #include <string>
@@ -106,11 +107,11 @@ void myWindow::cb_timer(Address pWidget, Address pWnd)
 void myWindow::timer_callback(Address addr)
 {
     myWindow *pWnd = static_cast<myWindow*>(addr);
-    pWnd -> rotationAngle = 0.40f;
+    pWnd -> rotationAngle += 0.05f;
     pWnd -> refreshMap();
     if (pWnd -> animationRunning)
     {
-        Fl::repeat_timeout(0.05, timer_callback, pWnd);
+        Fl::repeat_timeout(0.25, timer_callback, pWnd);
     }
 }
 void myWindow::refreshMap()

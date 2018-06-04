@@ -1,3 +1,4 @@
+//Hubert Janicki, numer albumu: 281771
 #include "drawing.h"
 #include "matrix.h"
 #include <iostream>
@@ -25,10 +26,10 @@ int main()
 //******************************************
 
 
-    myWindow wnd(Point(400, 400), 600, 400, "Hubert Janicki (281771)", { {20.0f, 20.0f}, {500.f, 380.f} });
+    myWindow wnd(Point(400, 400), 600, 400, "Hubert Janicki (281771)", { {20.0f, 20.0f}, {500.0f, 380.0f} });
 
     wnd.vecOfFigures = getFiguresFromFile("house.txt");
-    wnd.vecOfShapes = getShapesToDraw(wnd.vecOfFigures, { {20.0f, 20.0f}, {500.f, 380.f} });
+    wnd.vecOfShapes = getShapesToDraw(wnd.vecOfFigures, { {20.0f, 20.0f}, {500.0f, 380.0f} });
 
     // przygotowanie do wyswietlenia
 
