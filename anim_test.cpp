@@ -26,10 +26,9 @@ int main()
 //******************************************
 
 
-    myWindow wnd(Point(400, 400), 600, 400, "Hubert Janicki (281771)", { {20.0f, 20.0f}, {500.0f, 380.0f} });
+    myWindow wnd(Point(400, 400), 600, 400, "Hubert Janicki (281771)", { {20.0f, 20.0f}, {500.0f, 380.0f} }, "house.txt");
 
-    wnd.vecOfFigures = getFiguresFromFile("house.txt");
-    wnd.vecOfShapes = getShapesToDraw(wnd.vecOfFigures, { {20.0f, 20.0f}, {500.0f, 380.0f} });
+    wnd.getShapesToDraw();
 
     // przygotowanie do wyswietlenia
 

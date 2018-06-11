@@ -119,10 +119,9 @@ void myWindow::refreshMap()
     for (unsigned int i = 0; i < vecOfShapes.size(); i++)
     {
         this -> detach(*vecOfShapes[i]);
-        delete vecOfShapes[i];
     }
 
-    vecOfShapes = getShapesToDraw(winBox, vecOfFigures, scale.getCurVal(), moveX.getCurVal(), moveY.getCurVal(), rotationAngle);
+    getShapesToDraw(scale.getCurVal(), moveX.getCurVal(), moveY.getCurVal(), rotationAngle);
 
     if (vecOfShapes.size() != 0)
     {
@@ -133,5 +132,65 @@ void myWindow::refreshMap()
     }
 
     redraw();
+}
+
+void myWindow::draw()
+{
+    cout << "myWindow::draw()\n";
+    Fl_Window::draw();
+    fl_push_clip(10, 10, x_max()-100, y_max() - 20);
+    for(size_t i = 0; i < vecOfShapes.size(); i++)
+        vecOfShapes[i] -> draw();
+    fl_pop_clip();
+}
+
+void myWindow::getShapesToDraw()
+{
+    vecOfShapes.clear();
+    pair<FPoint, FPoint> picBox = map_bbox(vecOfFigures);
+    pair<FPoint, FPoint> trafo = get_transformation(picBox, winBox);
+
+        for (size_t i = 0; i < vecOfFigures.size(); ++i)
+        {
+            vecOfShapes.push_back((vecOfFigures[i]->get_shape(trafo.first, trafo.second)));
+        }
+}
+
+void myWindow::getShapesToDraw(int scale, int moveX, int moveY, float rotationAngle)
+{
+    vecOfShapes.clear();
+    vector<unique_ptr<figure>> new_figures;
+    std::string id = "Line";
+
+    float centerX = (float)((winBox.second.x + winBox.first.x)/ 2) + moveX;
+    float centerY = (float)((winBox.second.y + winBox.first.y)/ 2) - moveY;
+
+
+    Matrix<float> mx;
+    mx *= Matrix<float>::translateMx(-centerX + moveX, -centerY - moveY);
+    mx *= Matrix<float>::rotateMx(rotationAngle);
+    float sc = static_cast<float>(scale)/100;
+    mx *= Matrix<float>::scaleMx(sc, sc);
+    mx *= Matrix<float>::translateMx(centerX, centerY);
+
+    pair<FPoint, FPoint> picBox = map_bbox(vecOfFigures);
+    pair<FPoint, FPoint> trafo = get_transformation(picBox, winBox);
+
+    for(size_t i = 0; i < vecOfFigures.size(); ++i)
+    {
+        vector<FPoint> transPoints = vecOfFigures[i] -> getFDef(trafo.first, trafo.second);
+        for(int i = 0; i < (int)transPoints.size(); i++)
+        {
+            transPoints[i] = mx.transform(transPoints[i]);
+            cout << mx.transform(transPoints[i]) << "\n";
+        }
+        new_figures.push_back(get_figure(transPoints, id));
+        transPoints.clear();
+    }
+
+    for (size_t i = 0; i < new_figures.size(); ++i)
+    {
+        vecOfShapes.push_back((new_figures[i]->get_shape()));
+    }
 }
 

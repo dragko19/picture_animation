@@ -52,7 +52,7 @@
 
 //class Rect definitions
 
-    Graph_lib::Shape* Rect::get_shape(const FPoint& scale /*= {1.0f,1.0f}*/, const FPoint& trans /*= {0.0f,0.0f}*/) const
+    unique_ptr<Graph_lib::Shape> Rect::get_shape(const FPoint& scale /*= {1.0f,1.0f}*/, const FPoint& trans /*= {0.0f,0.0f}*/) const
     {
         std::vector<FPoint> fdef_new = coord_scaling(fdef, scale, trans);
 
@@ -65,7 +65,7 @@
 
         std::pair<FPoint,FPoint> res = min_max(fdef_new);
 
-        return new Graph_lib::Rectangle(res.first, res.second);
+        return unique_ptr<Graph_lib::Rectangle>(new Graph_lib::Rectangle(res.first, res.second));
     }
 
     vector<FPoint> Rect::getFDef(const FPoint& scale /*= {1.0f,1.0f}*/, const FPoint& trans /*= {0.0f,0.0f}*/)
@@ -81,11 +81,11 @@
 
 //class Circ definitions
 
-    Graph_lib::Shape* Circ::get_shape(const FPoint& scale /*= {1.0f,1.0f}*/, const FPoint& trans /*= {0.0f,0.0f}*/) const
+    unique_ptr<Graph_lib::Shape> Circ::get_shape(const FPoint& scale /*= {1.0f,1.0f}*/, const FPoint& trans /*= {0.0f,0.0f}*/) const
     {
         std::vector<FPoint> fdef_new = coord_scaling(fdef, scale, trans);
 
-        return new Graph_lib::Circle(fdef_new[0],(int)radius(fdef_new[0],fdef_new[1]));
+        return unique_ptr<Graph_lib::Circle>(new Graph_lib::Circle(fdef_new[0],(int)radius(fdef_new[0],fdef_new[1])));
     }
 
     std::pair<FPoint,FPoint> Circ::bbox() const
@@ -120,15 +120,16 @@
 
 //class Line definitions
 
-    Graph_lib::Shape* Line::get_shape(const FPoint& scale /*= {1.0f,1.0f}*/, const FPoint& trans /*= {0.0f,0.0f}*/) const
+    unique_ptr<Graph_lib::Shape> Line::get_shape(const FPoint& scale /*= {1.0f,1.0f}*/, const FPoint& trans /*= {0.0f,0.0f}*/) const
     {
         std::vector<FPoint> fdef_new = coord_scaling(fdef, scale, trans);
 
         Graph_lib::Shape* ply = new Graph_lib::Open_polyline;
         for(int i = 0; i < (int)fdef_new.size(); i++)
-            static_cast<Graph_lib::Open_polyline*>(ply)->add(Graph_lib::Point((int)fdef_new[i].x,(int)fdef_new[i].y));
+           static_cast<Graph_lib::Open_polyline*>(ply)->add(Graph_lib::Point((int)fdef_new[i].x,(int)fdef_new[i].y));
 
-        return ply;
+        unique_ptr<Graph_lib::Shape> retVal = unique_ptr<Graph_lib::Shape>(ply);
+        return retVal;
     }
 
 //other functions definitions
@@ -198,14 +199,14 @@
         throw std::runtime_error("Unknown figure id.");
     }
 
-    figure* get_figure(const vector<FPoint>& pts, std::string id)
+    unique_ptr<figure> get_figure(const vector<FPoint>& pts, std::string id)
     {
         if (id == Rect::class_id())
-            return new Rect(pts);
+            return unique_ptr<figure>(new Rect(pts));
         if (id == Circ::class_id())
-            return new Circ(pts);
+            return unique_ptr<figure>(new Circ(pts));
         if (id == Line::class_id())
-            return new Line(pts);
+            return unique_ptr<figure>(new Line(pts));
 
         throw std::runtime_error("Unknown figure id.");
     }
@@ -237,7 +238,7 @@
     }
 
     //finding min and max point of whole picture for drawing
-    std::pair<FPoint,FPoint> map_bbox(const std::vector<figure*>& figures)
+    std::pair<FPoint,FPoint> map_bbox(const std::vector<unique_ptr<figure>>& figures)
     {
         std::vector<FPoint> points;
         for(int i = 0; i < (int)figures.size(); i++)
@@ -328,7 +329,7 @@
         {
             try
             {
-                figure *fig;
+                figure* fig;
                 while ((fig = get_figure(ifs)) != nullptr)
                 {
                     figs.push_back(fig);
@@ -347,67 +348,4 @@
 
         return figs;
     }
-
-    vector<Graph_lib::Shape*> getShapesToDraw(vector<figure*> vF, std::pair<FPoint,FPoint> winBox)
-    {
-        vector<Graph_lib::Shape*> retVec;
-
-        pair<FPoint, FPoint> picBox = map_bbox(vF);
-        pair<FPoint, FPoint> trafo = get_transformation(picBox, winBox);
-
-            for (auto pf : vF)
-            {
-                retVec.push_back((pf->get_shape(trafo.first, trafo.second)));
-            }
-
-        return retVec;
-    }
-
-    vector<Graph_lib::Shape*> getShapesToDraw(std::pair<FPoint,FPoint> winBox, vector<figure*> vF, int scale, int moveX, int moveY, float rotationAngle)
-    {
-        vector<Graph_lib::Shape*> retVec;
-        vector<figure* > new_figures;
-        std::string id = "Line";
-
-        float centerX = (float)((winBox.second.x + winBox.first.x)/ 2);
-        float centerY = (float)((winBox.second.y + winBox.first.y)/ 2);
-
-
-        Matrix<float> mx;
-        mx *= Matrix<float>::translateMx(-centerX, -centerY);
-        mx *= Matrix<float>::rotateMx(rotationAngle);
-        mx *= Matrix<float>::translateMx(centerX, centerY);
-
-        pair<FPoint, FPoint> picBox = map_bbox(vF);
-        pair<FPoint, FPoint> trafo = get_transformation(picBox, winBox);
-
-        for(auto fig : vF)
-        {
-            vector<FPoint> transPoints = fig -> getFDef(trafo.first, trafo.second);
-            for(int i = 0; i < (int)transPoints.size(); i++)
-            {
-                transPoints[i] = mx.transform(transPoints[i]);
-                cout << mx.transform(transPoints[i]) << "\n";
-            }
-            new_figures.push_back(get_figure(transPoints, id));
-            transPoints.clear();
-        }
-
-        /*FPoint pic_center = center_of_box(picBox, {1.0f, -1.0f});
-        FPoint win_center = center_of_box(winBox, {1.0f, 1.0f});
-        FPoint trans = shift(pic_center, win_center);*/
-
-        for (auto pf : new_figures)
-        {
-            retVec.push_back((pf->get_shape()));
-        }
-
-        return retVec;
-    }
-
-
-
-
-
-
 

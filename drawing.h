@@ -59,6 +59,7 @@ class myWindow : public Graph_lib::Window
     Spinner scale, moveX, moveY;
 
     std::pair<FPoint, FPoint> winBox;
+    string filePath;
 
     void switchBtnAnimLabel();
 
@@ -66,29 +67,36 @@ class myWindow : public Graph_lib::Window
     static void cb_timer(Address pWidget, Address pWnd);
     static void timer_callback(Address addr);
 
+    void getShapesToDraw(int scale, int moveX, int moveY, float rotationAngle);
+    void draw();
+
 public:
-    myWindow(Point loc, int w, int h, string title, std::pair<FPoint, FPoint> wBox) :
+    myWindow(Point loc, int w, int h, string title, std::pair<FPoint, FPoint> wBox, string fPath) :
             Graph_lib::Window(loc, w, h, title),
             btn_close(Point(x_max() - 80, y_max() - 20), 80, 20, "Close", myWindow::cb_close),
             btn_Anim(Point(x_max() - 80, y_max() - 50), 80, 20, "Start", myWindow::cb_timer),
             scale(Point(x_max() - 90,10), 50, 150, "\\/", "/\\", 100),
             moveX(Point(x_max() - 90, 40), -200, 200, "<", ">", 0),
             moveY(Point(x_max() - 90, 70), -150, 150, "\\/", "/\\", 0),
-            winBox(wBox)
+             winBox(wBox), filePath(fPath)
             {
                 attach(btn_close);
                 attach(btn_Anim);
                 scale.attachTo(*this);
                 moveX.attachTo(*this);
                 moveY.attachTo(*this);
+                vector<figure*> temp = getFiguresFromFile(filePath);
+                for(auto fig : temp)
+                    vecOfFigures.push_back(unique_ptr<figure>(fig));
             }
 
     float rotationAngle = 0.0f;
 	bool animationRunning = false;
 	void refreshMap();
+    void getShapesToDraw();
 
-	vector<figure*> vecOfFigures;
-	vector<Shape*> vecOfShapes;
+	vector<unique_ptr<figure>> vecOfFigures;
+	vector<unique_ptr<Graph_lib::Shape>> vecOfShapes;
 
 };
 

@@ -1,0 +1,224 @@
+# depslib dependency file v1.0
+1528288085 source:d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\zad_8\drawing.cpp
+	"drawing.h"
+	"matrix.h"
+	<string>
+
+1528287592 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\zad_8\drawing.h
+	<Graph.h>
+	<GUI.h>
+	"figures.h"
+
+1520200938 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\graph_lib\graph.h
+	"Point.h"
+	<vector>
+	"fltk.h"
+	"std_lib_facilities.h"
+
+1520200036 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\graph_lib\point.h
+
+1520200036 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\graph_lib\fltk.h
+	<FL/Fl.H>
+	<FL/Fl_Window.H>
+	<FL/Fl_Button.H>
+	<FL/Fl_Input.H>
+	<FL/Fl_Output.H>
+	<cstdlib>
+	<FL/fl_draw.H>
+	<FL/Enumerations.H>
+	<Fl/Fl_JPEG_Image.H>
+	<Fl/Fl_GIF_Image.H>
+
+1474024308 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl.h
+	<FL/Fl_Export.H>
+	<FL/Fl_Cairo.H>
+	"fl_utf8.h"
+	"Enumerations.H"
+	<stdio.h>
+	<FL/Fl.H>
+	<FL/Fl_Window.H>
+
+1408631388 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_export.h
+
+1455388536 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_cairo.h
+	<FL/Fl_Export.H>
+	<cairo.h>
+
+1456924508 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_utf8.h
+	"Fl_Export.H"
+	"fl_types.h"
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<locale.h>
+	<ctype.h>
+	<wchar.h>
+	<sys/stat.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<X11/Xlocale.h>
+	<X11/Xlib.h>
+	<locale.h>
+
+1434407081 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_types.h
+
+1468097011 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\enumerations.h
+	<FL/abi-version.h>
+	"Fl_Export.H"
+	"fl_types.h"
+
+1520428063 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\build\fl\abi-version.h
+
+1438028026 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_window.h
+	<windows.h>
+	"Fl_Group.H"
+	"Fl_Bitmap.H"
+	<stdlib.h>
+
+1415660951 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_group.h
+	"Fl_Widget.H"
+
+1428231884 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_widget.h
+	"Enumerations.H"
+	<stdint.h>
+	<stddef.h>
+
+1393084310 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_bitmap.h
+	"Fl_Image.H"
+
+1476470144 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_image.h
+	"Enumerations.H"
+	<stdlib.h>
+
+1413757037 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_button.h
+	"Fl_Widget.H"
+
+1311058170 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_input.h
+	"Fl_Input_.H"
+
+1437494113 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_input_.h
+	"Fl_Widget.H"
+
+1343111842 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_output.h
+	"Fl_Input.H"
+
+1474808826 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_draw.h
+	<FL/x.H>
+	<FL/Enumerations.H>
+	<FL/Fl_Window.H>
+	<FL/Fl_Device.H>
+
+1448559298 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\x.h
+	"Enumerations.H"
+	"win32.H"
+	"mac.H"
+	<X11/Xlib.h>
+	<X11/Xutil.h>
+	<X11/Xatom.h>
+	"Fl_Window.H"
+
+1410780905 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\win32.h
+	<windows.h>
+	<FL/Fl_Window.H>
+
+1475913554 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\mac.h
+	<FL/Fl_Widget.H>
+	<ApplicationServices/ApplicationServices.h>
+	"Fl_Window.H"
+	"../src/Fl_Font.H"
+
+1408790518 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\src\fl_font.h
+	<config.h>
+	"Xutf8.h"
+
+1520428063 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\build\config.h
+	<mac_endianness.h>
+
+1311058170 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\mac_endianness.h
+
+1424615160 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\src\xutf8.h
+	<X11/X.h>
+	<X11/Xlib.h>
+	<X11/Xlocale.h>
+	<X11/Xutil.h>
+	<FL/Fl_Export.H>
+
+1476637202 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_device.h
+	<FL/x.H>
+	<FL/Fl_Plugin.H>
+	<FL/Fl_Image.H>
+	<FL/Fl_Bitmap.H>
+	<FL/Fl_Pixmap.H>
+	<FL/Fl_RGB_Image.H>
+	<stdlib.h>
+
+1311058170 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_plugin.h
+	"Fl_Preferences.H"
+
+1379370314 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_preferences.h
+	<stdio.h>
+	"Fl_Export.H"
+
+1352238374 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_pixmap.h
+	"Fl_Image.H"
+	"x.H"
+
+1311058170 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_rgb_image.h
+	"Fl_Image.H"
+
+1432431746 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_jpeg_image.h
+	"Fl_Image.H"
+
+1432431746 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\fltk-1.3.4-2\fl\fl_gif_image.h
+	"Fl_Pixmap.H"
+
+1521638266 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\graph_lib\std_lib_facilities.h
+	<iostream>
+	<iomanip>
+	<fstream>
+	<sstream>
+	<cmath>
+	<cstdlib>
+	<string>
+	<list>
+	<forward_list>
+	<vector>
+	<unordered_map>
+	<algorithm>
+	<array>
+	<regex>
+	<random>
+	<stdexcept>
+
+1520200036 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\graph_lib\gui.h
+	"Window.h"
+	"Graph.h"
+
+1520200036 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\graph_lib\window.h
+	"fltk.h"
+	"std_lib_facilities.h"
+	"Point.h"
+
+1528287729 source:d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\zad_8\figures.cpp
+	"figures.h"
+	"matrix.h"
+
+1528287745 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\zad_8\figures.h
+	<iostream>
+	<stdexcept>
+	<exception>
+	<vector>
+	<string>
+	<algorithm>
+	<graph.h>
+
+1528287440 source:d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\zad_8\anim_test.cpp
+	"drawing.h"
+	"matrix.h"
+	<iostream>
+
+1528152068 d:\dysk google\pw\gi\jtp 2\laptop\codeblocks\zad_8\matrix.h
+	"figures.h"
+

@@ -25,12 +25,12 @@ std::string get_id(std::istream& is);
 vector<FPoint> get_points(std::istream& is);
 
 figure* get_figure(std::istream& is);
-figure* get_figure(const vector<FPoint>& pts, std::string id);
+unique_ptr<figure> get_figure(const vector<FPoint>& pts, std::string id);
 
 double radius(FPoint,FPoint);
 
 std::pair<FPoint,FPoint> get_transformation(const std::pair<FPoint,FPoint>& obj_bbox, const std::pair<FPoint,FPoint>& disp_bbox);
-std::pair<FPoint,FPoint> map_bbox(const std::vector<figure*>& figures);
+std::pair<FPoint,FPoint> map_bbox(const std::vector<unique_ptr<figure>>& figures);
 
 const std::string window_title();
 
@@ -41,8 +41,6 @@ FPoint center_of_box(const std::pair<FPoint,FPoint>& box, const FPoint& scale);
 FPoint shift(const FPoint& obj_bbox_center, const FPoint& disp_bbox_center);
 
 vector<figure*> getFiguresFromFile(const string& filePath);
-vector<Graph_lib::Shape*> getShapesToDraw(vector<figure*> vF, std::pair<FPoint,FPoint> winBox);
-vector<Graph_lib::Shape*> getShapesToDraw(std::pair<FPoint,FPoint> winBox, vector<figure*> vF, int scale = 100, int moveX = 0, int moveY = 0, float rotationAngle = 0.0f);
 FPoint setVecBboxFirstPartCoordSys(pair<FPoint, FPoint>& bbox);
 
 class FPoint
@@ -89,13 +87,13 @@ class figure
 
     virtual std::pair<FPoint, FPoint> bbox() const;
 
-    virtual Graph_lib::Shape* get_shape(const FPoint& scale = {1.0f,1.0f}, const FPoint& trans = {0.0f,0.0f}) const = 0;
+    virtual unique_ptr<Graph_lib::Shape> get_shape(const FPoint& scale = {1.0f,1.0f}, const FPoint& trans = {0.0f,0.0f}) const = 0;
 
 };
 
 class Rect : public figure
 {
-    Graph_lib::Shape* get_shape(const FPoint& scale = {1.0f,1.0f}, const FPoint& trans = {0.0f,0.0f}) const;
+    unique_ptr<Graph_lib::Shape> get_shape(const FPoint& scale = {1.0f,1.0f}, const FPoint& trans = {0.0f,0.0f}) const;
 
 public:
 
@@ -120,7 +118,7 @@ public:
 
 class Circ : public figure
 {
-    Graph_lib::Shape* get_shape(const FPoint& scale = {1.0f,1.0f}, const FPoint& trans = {0.0f,0.0f}) const;
+    unique_ptr<Graph_lib::Shape> get_shape(const FPoint& scale = {1.0f,1.0f}, const FPoint& trans = {0.0f,0.0f}) const;
 
 public:
     Circ(const vector<FPoint>& fv) : figure(fv)
@@ -145,7 +143,7 @@ public:
 
 class Line: public figure
 {
-    Graph_lib::Shape* get_shape(const FPoint& scale = {1.0f,1.0f}, const FPoint& trans = {0.0f,0.0f}) const;
+    unique_ptr<Graph_lib::Shape> get_shape(const FPoint& scale = {1.0f,1.0f}, const FPoint& trans = {0.0f,0.0f}) const;
 
 public:
     Line(const vector<FPoint>& fv) : figure(fv)
